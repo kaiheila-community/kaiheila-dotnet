@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaiheila-dotnet", "src\kaiheila-dotnet.csproj", "{73989B55-9B16-452E-B9F7-86D3C767C06C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaiheila-dotnet-test", "test\kaiheila-dotnet-test.csproj", "{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{73989B55-9B16-452E-B9F7-86D3C767C06C}.Release|x64.Build.0 = Release|Any CPU
 		{73989B55-9B16-452E-B9F7-86D3C767C06C}.Release|x86.ActiveCfg = Release|Any CPU
 		{73989B55-9B16-452E-B9F7-86D3C767C06C}.Release|x86.Build.0 = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|x64.Build.0 = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Debug|x86.Build.0 = Debug|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|x64.ActiveCfg = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|x64.Build.0 = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|x86.ActiveCfg = Release|Any CPU
+		{F98C908B-C9C1-45A5-A05F-AB3D8EAE6196}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
