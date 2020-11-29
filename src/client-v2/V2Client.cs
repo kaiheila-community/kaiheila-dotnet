@@ -97,7 +97,7 @@ namespace Kaiheila.Client.V2
 
             return new KhUser
             {
-                Id = int.Parse(response["user"]?["id"]?.ToObject<string>()!),
+                Id = long.Parse(response["user"]?["id"]?.ToObject<string>()!),
                 Username = response["user"]?["username"]?.ToObject<string>()
             };
         }
@@ -120,7 +120,7 @@ namespace Kaiheila.Client.V2
             {
                 users.Add(new KhUser
                 {
-                    Id = int.Parse(token["friend_info"]?["id"]?.ToObject<string>()!),
+                    Id = long.Parse(token["friend_info"]?["id"]?.ToObject<string>()!),
                     Username = token["friend_info"]?["username"]?.ToObject<string>()
                 });
             }
