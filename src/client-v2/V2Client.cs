@@ -1,6 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using Kaiheila.Data;
 using Kaiheila.Events;
+using Kaiheila.Net;
+using Newtonsoft.Json.Linq;
 using Websocket.Client;
 
 namespace Kaiheila.Client.V2
@@ -37,6 +42,10 @@ namespace Kaiheila.Client.V2
         #region Config
 
         private readonly string _auth;
+
+        private const string ApiPrefix = @"ttps://www.kaiheila.cn/api/v2";
+
+        private static string GetUri(string endpoint) => ApiPrefix + endpoint;
 
         #endregion
 
@@ -77,9 +86,19 @@ namespace Kaiheila.Client.V2
 
         #region Friend
 
-        public KhUser GetUserState()
+        public async Task<KhUser> GetUserState()
         {
-            throw new NotImplementedException();
+            HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri("/user/user-state"));
+            
+            JObject response =
+                JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                    .ReadToEndAsync());
+
+            return new KhUser
+            {
+                Id = int.Parse(response["user"]?["id"]?.ToObject<string>()!),
+                Username = response["user"]?["username"]?.ToObject<string>()
+            };
         }
 
         #endregion
