@@ -1,4 +1,5 @@
 ﻿using System;
+using Kaiheila.Data;
 using Kaiheila.Events;
 
 namespace Kaiheila.Client
@@ -14,6 +15,18 @@ namespace Kaiheila.Client
         /// 机器人事件Observable。
         /// </summary>
         public IObservable<KhEventBase> Event { get; set; }
+
+        #endregion
+
+        #region Message
+
+
+
+        #endregion
+
+        #region Friend
+
+        public KhUser GetUserState();
 
         #endregion
     }
