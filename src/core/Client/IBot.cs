@@ -7,7 +7,7 @@ namespace Kaiheila.Client
     /// <summary>
     /// Kaiheila机器人。
     /// </summary>
-    public interface IBot
+    public interface IBot : IDisposable
     {
         #region Event
 

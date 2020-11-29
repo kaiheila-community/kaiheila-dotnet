@@ -31,6 +31,15 @@ namespace Kaiheila.Client.V2
 
         #endregion
 
+        #region Lifecycle
+
+        public void Dispose()
+        {
+
+        }
+
+        #endregion
+
         #region Event
 
         /// <summary>
