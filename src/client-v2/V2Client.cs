@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -99,6 +100,32 @@ namespace Kaiheila.Client.V2
                 Id = int.Parse(response["user"]?["id"]?.ToObject<string>()!),
                 Username = response["user"]?["username"]?.ToObject<string>()
             };
+        }
+
+        public async Task<List<KhUser>> GetFriends(KhFriendsType type)
+        {
+            HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri($"/friends?type={type.GetTypeString()}"));
+
+            string raw = await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                .ReadToEndAsync();
+
+            if (string.IsNullOrEmpty(raw))
+                return new List<KhUser>();
+
+            JArray response = JArray.Parse(raw);
+
+            List<KhUser> users = new List<KhUser>();
+
+            foreach (JToken token in response)
+            {
+                users.Add(new KhUser
+                {
+                    Id = int.Parse(token["friend_info"]?["id"]?.ToObject<string>()!),
+                    Username = token["friend_info"]?["username"]?.ToObject<string>()
+                });
+            }
+
+            return users;
         }
 
         #endregion

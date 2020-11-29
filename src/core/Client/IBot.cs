@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kaiheila.Data;
 using Kaiheila.Events;
@@ -28,6 +29,8 @@ namespace Kaiheila.Client
         #region Friend
 
         public Task<KhUser> GetUserState();
+
+        public Task<List<KhUser>> GetFriends(KhFriendsType type);
 
         #endregion
     }
