@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -90,7 +90,8 @@ namespace Kaiheila.Client.V2
         public async Task<KhUser> GetUserState()
         {
             HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri("/user/user-state"));
-            
+            request.Headers["Cookie"] = "auth=" + _auth;
+
             JObject response =
                 JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
                     .ReadToEndAsync());
@@ -105,6 +106,7 @@ namespace Kaiheila.Client.V2
         public async Task<List<KhUser>> GetFriends(KhFriendsType type)
         {
             HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri($"/friends?type={type.GetTypeString()}"));
+            request.Headers["Cookie"] = "auth=" + _auth;
 
             string raw = await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
                 .ReadToEndAsync();
