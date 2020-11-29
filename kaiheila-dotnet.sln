@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A60FD1FC-5B6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaiheila-dotnet-client-v2", "src\client-v2\kaiheila-dotnet-client-v2.csproj", "{FE009A92-7E8B-48A2-8419-6FDF1C71BD90}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{57707BAA-427F-4D2C-AB5B-F680D162F7F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaiheila-dotnet-client-v2-test", "test\client-v2\kaiheila-dotnet-client-v2-test.csproj", "{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,8 +64,21 @@ Global
 		{FE009A92-7E8B-48A2-8419-6FDF1C71BD90}.Release|x64.Build.0 = Release|Any CPU
 		{FE009A92-7E8B-48A2-8419-6FDF1C71BD90}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE009A92-7E8B-48A2-8419-6FDF1C71BD90}.Release|x86.Build.0 = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|x64.Build.0 = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FE009A92-7E8B-48A2-8419-6FDF1C71BD90} = {A60FD1FC-5B68-4CFE-9975-8B589FF727A0}
+		{1E7D6665-BFA8-4374-8288-7243C1CB8B3B} = {57707BAA-427F-4D2C-AB5B-F680D162F7F5}
 	EndGlobalSection
 EndGlobal
