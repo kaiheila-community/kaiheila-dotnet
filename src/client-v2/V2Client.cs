@@ -1,6 +1,7 @@
 ﻿using System;
 using Kaiheila.Data;
 using Kaiheila.Events;
+using Websocket.Client;
 
 namespace Kaiheila.Client.V2
 {
@@ -11,14 +12,24 @@ namespace Kaiheila.Client.V2
     {
         #region Constructor
 
+        /// <summary>
+        /// 初始化Kaiheila V2机器人。
+        /// </summary>
+        /// <param name="auth">Kaiheila鉴权使用的Cookie中的auth字段。</param>
+        /// <param name="uri">WebSocket连接地址。</param>
         public V2Client(
             string auth,
-            string host,
-            string port)
+            Uri uri)
         {
             _auth = auth;
-            _host = host;
-            _port = port;
+            
+            _websocketClient = new WebsocketClient(uri)
+            {
+                ReconnectTimeout = TimeSpan.FromSeconds(5)
+            };
+
+            _websocketClient.MessageReceived.Subscribe(SocketOnMessage);
+            _websocketClient.Start();
         }
 
         #endregion
@@ -26,8 +37,6 @@ namespace Kaiheila.Client.V2
         #region Config
 
         private readonly string _auth;
-        private readonly string _host;
-        private readonly string _port;
 
         #endregion
 
@@ -35,7 +44,18 @@ namespace Kaiheila.Client.V2
 
         public void Dispose()
         {
+            _websocketClient?.Dispose();
+        }
 
+        #endregion
+
+        #region Core
+
+        private readonly WebsocketClient _websocketClient;
+
+        private void SocketOnMessage(ResponseMessage obj)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
