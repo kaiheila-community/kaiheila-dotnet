@@ -6,6 +6,6 @@
 
         public long ChannelId;
 
-        public long ChannelName;
+        public string ChannelName;
     }
 }
