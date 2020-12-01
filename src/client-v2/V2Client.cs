@@ -125,7 +125,7 @@ namespace Kaiheila.Client.V2
             _websocketClient.Send(JObject.FromObject(new
             {
                 cmd = "sendMessage",
-                type = "1",
+                type = 3,
                 channelId = channel.ToString(),
                 content = message
             }).ToString());
