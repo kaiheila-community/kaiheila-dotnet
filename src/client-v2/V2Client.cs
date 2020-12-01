@@ -50,7 +50,7 @@ namespace Kaiheila.Client.V2
 
         private readonly string _auth;
 
-        private const string ApiPrefix = @"ttps://www.kaiheila.cn/api/v2";
+        private const string ApiPrefix = @"https://www.kaiheila.cn/api/v2";
 
         private static string GetUri(string endpoint) => ApiPrefix + endpoint;
 
