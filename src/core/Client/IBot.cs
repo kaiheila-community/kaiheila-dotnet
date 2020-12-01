@@ -22,7 +22,7 @@ namespace Kaiheila.Client
 
         #region Message
 
-
+        public Task SendMessage(long channel, string message);
 
         #endregion
 
