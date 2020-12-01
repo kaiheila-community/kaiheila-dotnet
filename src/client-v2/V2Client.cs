@@ -103,7 +103,16 @@ namespace Kaiheila.Client.V2
             JObject payload = JObject.Parse(obj.Text);
             if (payload["cmd"]?.ToObject<string>() != "receiveMessage") return;
 
-            JObject extra = JObject.Parse(payload["args"]?[0]?["content"]?["extra"]?.ToObject<string>()!);
+            JObject extra;
+
+            try
+            {
+                extra = JObject.Parse(payload["args"]?[0]?["content"]?["extra"]?.ToObject<string>()!);
+            }
+            catch (Exception)
+            {
+                return;
+            }
 
             _eventObserver?.OnNext(new KhEventMessage
             {
