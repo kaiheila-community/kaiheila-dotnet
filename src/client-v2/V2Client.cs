@@ -194,5 +194,25 @@ namespace Kaiheila.Client.V2
         }
 
         #endregion
+
+        #region Channel
+
+        public async Task<KhChannel> GetChannelState(long channelId)
+        {
+            HttpWebRequest request = CreateWebRequest(GetUri("/channels/" + channelId));
+
+            JObject response =
+                JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                    .ReadToEndAsync());
+
+            return new KhChannel
+            {
+                ChannelId = long.Parse(response["id"]?.ToObject<string>()!),
+                ChannelName = response["name"]?.ToObject<string>(),
+                Guild = long.Parse(response["guild_id"]?.ToObject<string>()!)
+            };
+        }
+
+        #endregion
     }
 }

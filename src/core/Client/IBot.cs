@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kaiheila.Data;
@@ -31,6 +31,12 @@ namespace Kaiheila.Client
         public Task<KhUser> GetUserState(long user = 0);
 
         public Task<List<KhUser>> GetFriends(KhFriendsType type);
+
+        #endregion
+
+        #region Channel
+
+        public Task<KhChannel> GetChannelState(long channelId);
 
         #endregion
     }
