@@ -135,19 +135,36 @@ namespace Kaiheila.Client.V2
 
         #region Friend
 
-        public async Task<KhUser> GetUserState()
+        public async Task<KhUser> GetUserState(long user = 0)
         {
-            HttpWebRequest request = CreateWebRequest(GetUri("/user/user-state"));
-
-            JObject response =
-                JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
-                    .ReadToEndAsync());
-
-            return new KhUser
+            if (user == 0)
             {
-                Id = long.Parse(response["user"]?["id"]?.ToObject<string>()!),
-                Username = response["user"]?["username"]?.ToObject<string>()
-            };
+                HttpWebRequest request = CreateWebRequest(GetUri("/user/user-state"));
+
+                JObject response =
+                    JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                        .ReadToEndAsync());
+
+                return new KhUser
+                {
+                    Id = long.Parse(response["user"]?["id"]?.ToObject<string>()!),
+                    Username = response["user"]?["username"]?.ToObject<string>()
+                };
+            }
+            else
+            {
+                HttpWebRequest request = CreateWebRequest(GetUri("/users/" + user));
+
+                JObject response =
+                    JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                        .ReadToEndAsync());
+
+                return new KhUser
+                {
+                    Id = long.Parse(response["id"]?.ToObject<string>()!),
+                    Username = response["username"]?.ToObject<string>()
+                };
+            }
         }
 
         public async Task<List<KhUser>> GetFriends(KhFriendsType type)
