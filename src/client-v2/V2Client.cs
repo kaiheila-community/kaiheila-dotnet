@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Kaiheila.Data;
@@ -30,7 +31,13 @@ namespace Kaiheila.Client.V2
             Uri uri)
         {
             _auth = auth;
-            
+
+            Event = Observable.Create<KhEventBase>(observer =>
+            {
+                _eventObserver = observer;
+                return Disposable.Empty;
+            });
+
             _websocketClient = new WebsocketClient(uri)
             {
                 ReconnectTimeout = TimeSpan.FromSeconds(5)
@@ -76,11 +83,6 @@ namespace Kaiheila.Client.V2
 
         private readonly WebsocketClient _websocketClient;
 
-        private void SocketOnMessage(ResponseMessage obj)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region Event
@@ -90,11 +92,33 @@ namespace Kaiheila.Client.V2
         /// </summary>
         public IObservable<KhEventBase> Event { get; set; }
 
+        private IObserver<KhEventBase> _eventObserver;
+
         #endregion
 
         #region Message
 
+        private void SocketOnMessage(ResponseMessage obj)
+        {
+            JObject payload = JObject.Parse(obj.Text);
+            if (payload["cmd"]?.ToObject<string>() != "receiveMessage") return;
 
+            JObject extra = JObject.Parse(payload["args"]?[0]?["content"]?["extra"]?.ToObject<string>()!);
+
+            _eventObserver?.OnNext(new KhEventMessage
+            {
+                Content = payload["args"]?[0]?["content"]?["content"]?.ToObject<string>(),
+                ChannelId = long.Parse(payload["args"]?[0]?["targetId"]?.ToObject<string>()!),
+                ChannelName = extra["channel_name"]?.ToObject<string>(),
+                Guild = long.Parse(extra["guild_id"]?.ToObject<string>()!),
+                Raw = obj.Text,
+                User = new KhUser
+                {
+                    Id = long.Parse(extra["author"]?["id"]?.ToObject<string>()!),
+                    Username = extra["author"]?["username"]?.ToObject<string>()
+                }
+            });
+        }
 
         #endregion
 
