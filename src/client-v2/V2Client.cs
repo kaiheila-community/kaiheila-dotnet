@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Kaiheila.Data;
 using Kaiheila.Events;
@@ -33,8 +35,12 @@ namespace Kaiheila.Client.V2
             {
                 ReconnectTimeout = TimeSpan.FromSeconds(5)
             };
+            _websocketClient.ReconnectTimeout = TimeSpan.MaxValue;
 
-            _websocketClient.MessageReceived.Subscribe(SocketOnMessage);
+            _websocketClient.MessageReceived
+                .ObserveOn(TaskPoolScheduler.Default)
+                .Subscribe(SocketOnMessage);
+
             _websocketClient.Start();
         }
 
