@@ -54,6 +54,13 @@ namespace Kaiheila.Client.V2
 
         private static string GetUri(string endpoint) => ApiPrefix + endpoint;
 
+        private HttpWebRequest CreateWebRequest(string uri)
+        {
+            var request = RequestHelper.CreateWebRequest(uri);
+            request.Headers["Cookie"] = "auth=" + _auth;
+            return request;
+        }
+
         #endregion
 
         #region Lifecycle
@@ -95,8 +102,7 @@ namespace Kaiheila.Client.V2
 
         public async Task<KhUser> GetUserState()
         {
-            HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri("/user/user-state"));
-            request.Headers["Cookie"] = "auth=" + _auth;
+            HttpWebRequest request = CreateWebRequest(GetUri("/user/user-state"));
 
             JObject response =
                 JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
@@ -111,8 +117,7 @@ namespace Kaiheila.Client.V2
 
         public async Task<List<KhUser>> GetFriends(KhFriendsType type)
         {
-            HttpWebRequest request = RequestHelper.CreateWebRequest(GetUri($"/friends?type={type.GetTypeString()}"));
-            request.Headers["Cookie"] = "auth=" + _auth;
+            HttpWebRequest request = CreateWebRequest(GetUri($"/friends?type={type.GetTypeString()}"));
 
             string raw = await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
                 .ReadToEndAsync();
