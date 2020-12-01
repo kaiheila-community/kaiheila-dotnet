@@ -2,6 +2,6 @@
 {
     public class KhEventBase
     {
-
+        public string Raw;
     }
 }
