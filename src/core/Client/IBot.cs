@@ -30,6 +30,8 @@ namespace Kaiheila.Client
 
         public Task SendTextMessage(long channel, string message);
 
+        public Task SendImageMessage(long channel, string imageUrl, string imageName);
+
         #endregion
 
         #region Friend

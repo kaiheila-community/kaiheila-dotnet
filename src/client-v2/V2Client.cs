@@ -149,6 +149,17 @@ namespace Kaiheila.Client.V2
             }).ToString());
         }
 
+        public async Task SendImageMessage(long channel, string imageUrl, string imageName)
+        {
+            _websocketClient.Send(JObject.FromObject(new
+            {
+                cmd = "sendGroupImage",
+                channelId = channel.ToString(),
+                content = imageUrl,
+                image_name = imageName
+            }).ToString());
+        }
+
         #endregion
 
         #region Friend
