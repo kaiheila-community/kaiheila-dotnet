@@ -49,6 +49,10 @@ namespace Kaiheila.Client.V2
                 .Subscribe(SocketOnMessage);
 
             _websocketClient.Start();
+
+            Task<KhUser> getUserStateAsync = GetUserState();
+            getUserStateAsync.Wait();
+            Self = getUserStateAsync.Result;
         }
 
         #endregion
@@ -93,6 +97,12 @@ namespace Kaiheila.Client.V2
         public IObservable<KhEventBase> Event { get; set; }
 
         private IObserver<KhEventBase> _eventObserver;
+
+        #endregion
+
+        #region User
+
+        public KhUser Self { get; }
 
         #endregion
 

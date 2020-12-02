@@ -20,6 +20,12 @@ namespace Kaiheila.Client
 
         #endregion
 
+        #region User
+
+        public KhUser Self { get; }
+
+        #endregion
+
         #region Message
 
         public Task SendMessage(long channel, string message);
