@@ -139,12 +139,11 @@ namespace Kaiheila.Client.V2
             });
         }
 
-        public async Task SendMessage(long channel, string message)
+        public async Task SendTextMessage(long channel, string message)
         {
             _websocketClient.Send(JObject.FromObject(new
             {
-                cmd = "sendMessage",
-                type = 3,
+                cmd = "sendGroupMessage",
                 channelId = channel.ToString(),
                 content = message
             }).ToString());
