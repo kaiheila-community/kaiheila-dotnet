@@ -124,7 +124,7 @@ namespace Kaiheila.Client.V2
                 return;
             }
 
-            _eventObserver?.OnNext(new KhEventMessage
+            _eventObserver?.OnNext(new KhEventTextMessage
             {
                 Content = payload["args"]?[0]?["content"]?["content"]?.ToObject<string>(),
                 ChannelId = long.Parse(payload["args"]?[0]?["targetId"]?.ToObject<string>()!),

@@ -1,6 +1,6 @@
 ﻿namespace Kaiheila.Events
 {
-    public class KhEventMessage : KhEventBase
+    public class KhEventTextMessage : KhEventBase
     {
         public string Content;
     }
