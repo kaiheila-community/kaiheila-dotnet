@@ -1,4 +1,7 @@
-﻿using Kaiheila.Data;
+﻿using System;
+using System.Threading.Tasks;
+using Kaiheila.Client;
+using Kaiheila.Data;
 
 namespace Kaiheila.Events
 {
@@ -13,5 +16,15 @@ namespace Kaiheila.Events
         public string ChannelName;
 
         public KhUser User;
+
+        #region Send
+
+        public virtual async Task Send(BotBase bot)
+        {
+            // Abstract
+            throw new NotImplementedException($"{GetType().Name}中无法调用Send()。");
+        }
+
+        #endregion
     }
 }
