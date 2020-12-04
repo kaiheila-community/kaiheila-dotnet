@@ -17,7 +17,7 @@ namespace Kaiheila.Client.V2
     /// <summary>
     /// Kaiheila V2机器人。
     /// </summary>
-    public sealed class V2Client : IBot
+    public sealed class V2Client : BotBase
     {
         #region Constructor
 
@@ -34,7 +34,7 @@ namespace Kaiheila.Client.V2
 
             Event = Observable.Create<KhEventBase>(observer =>
             {
-                _eventObserver = observer;
+                EventObserver = observer;
                 return Disposable.Empty;
             });
 
@@ -76,7 +76,7 @@ namespace Kaiheila.Client.V2
 
         #region Lifecycle
 
-        public void Dispose()
+        public override void Dispose()
         {
             _websocketClient?.Dispose();
         }
@@ -86,23 +86,6 @@ namespace Kaiheila.Client.V2
         #region Core
 
         private readonly WebsocketClient _websocketClient;
-
-        #endregion
-
-        #region Event
-
-        /// <summary>
-        /// 机器人事件Observable。
-        /// </summary>
-        public IObservable<KhEventBase> Event { get; set; }
-
-        private IObserver<KhEventBase> _eventObserver;
-
-        #endregion
-
-        #region User
-
-        public KhUser Self { get; }
 
         #endregion
 
@@ -124,7 +107,7 @@ namespace Kaiheila.Client.V2
                 return;
             }
 
-            _eventObserver?.OnNext(new KhEventTextMessage
+            EventObserver?.OnNext(new KhEventTextMessage
             {
                 Content = payload["args"]?[0]?["content"]?["content"]?.ToObject<string>(),
                 ChannelId = long.Parse(payload["args"]?[0]?["targetId"]?.ToObject<string>()!),
@@ -139,7 +122,7 @@ namespace Kaiheila.Client.V2
             });
         }
 
-        public async Task SendTextMessage(long channel, string message)
+        public override async Task SendTextMessage(long channel, string message)
         {
             _websocketClient.Send(JObject.FromObject(new
             {
@@ -149,7 +132,7 @@ namespace Kaiheila.Client.V2
             }).ToString());
         }
 
-        public async Task SendImageMessage(long channel, string imageUrl, string imageName)
+        public override async Task SendImageMessage(long channel, string imageUrl, string imageName)
         {
             _websocketClient.Send(JObject.FromObject(new
             {
@@ -164,7 +147,7 @@ namespace Kaiheila.Client.V2
 
         #region Friend
 
-        public async Task<KhUser> GetUserState(long user = 0)
+        public override async Task<KhUser> GetUserState(long user = 0)
         {
             if (user == 0)
             {
@@ -196,7 +179,7 @@ namespace Kaiheila.Client.V2
             }
         }
 
-        public async Task<List<KhUser>> GetFriends(KhFriendsType type)
+        public override async Task<List<KhUser>> GetFriends(KhFriendsType type)
         {
             HttpWebRequest request = CreateWebRequest(GetUri($"/friends?type={type.GetTypeString()}"));
 
@@ -226,7 +209,7 @@ namespace Kaiheila.Client.V2
 
         #region Channel
 
-        public async Task<KhChannel> GetChannelState(long channelId)
+        public override async Task<KhChannel> GetChannelState(long channelId)
         {
             HttpWebRequest request = CreateWebRequest(GetUri("/channels/" + channelId));
 
