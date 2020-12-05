@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Kaiheila.Assets;
 using Kaiheila.Data;
 using Kaiheila.Events;
 using Kaiheila.Net;
@@ -65,9 +67,9 @@ namespace Kaiheila.Client.V2
 
         private static string GetUri(string endpoint) => ApiPrefix + endpoint;
 
-        private HttpWebRequest CreateWebRequest(string uri)
+        private HttpWebRequest CreateWebRequest(string uri, bool post = false)
         {
-            var request = RequestHelper.CreateWebRequest(uri);
+            var request = RequestHelper.CreateWebRequest(uri, post);
             request.Headers["Cookie"] = "auth=" + _auth;
             return request;
         }
@@ -141,6 +143,77 @@ namespace Kaiheila.Client.V2
                 content = imageUrl,
                 image_name = imageName
             }).ToString());
+        }
+
+        #endregion
+
+        #region Upload
+
+        public override async Task<KhEventImage> UploadImage(
+            string name,
+            long channel,
+            string file)
+        {
+            // Construct Request
+            HttpWebRequest request = CreateWebRequest(GetUri("/assets"), true);
+            request.ContentType = "multipart/form-data";
+
+            // Initialize Content
+            MultipartFormDataContent content = new MultipartFormDataContent
+            {
+                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "image"},
+                {new StringContent("image"), "type"},
+                {new StringContent(channel.ToString()), "channel_id"}
+            };
+
+            await content.CopyToAsync(request.GetRequestStream());
+
+            // Get Response
+            JObject response =
+                JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                    .ReadToEndAsync());
+
+            return new KhEventImage(
+                response["url"]?.ToObject<string>()?.Replace(KhEventAsset.AssetsPrefix, ""),
+                name)
+            {
+                ChannelId = channel,
+                User = Self
+            };
+        }
+
+        public override async Task<KhEventFile> UploadFile(
+            string name,
+            long channel,
+            string file)
+        {
+            // Construct Request
+            HttpWebRequest request = CreateWebRequest(GetUri("/assets/file"), true);
+            request.ContentType = "multipart/form-data";
+
+            // Initialize Content
+            MultipartFormDataContent content = new MultipartFormDataContent
+            {
+                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "file"},
+                {new StringContent(channel.ToString()), "channel_id"},
+                {new StringContent(name), "filename"}
+            };
+
+            await content.CopyToAsync(request.GetRequestStream());
+
+            // Get Response
+            JObject response =
+                JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                    .ReadToEndAsync());
+
+            return new KhEventFile(
+                response["url"]?.ToObject<string>(),
+                name,
+                response["extension"]?.ToObject<string>())
+            {
+                ChannelId = channel,
+                User = Self
+            };
         }
 
         #endregion
