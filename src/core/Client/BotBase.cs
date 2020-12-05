@@ -98,12 +98,12 @@ namespace Kaiheila.Client
         public abstract Task<KhEventImage> UploadImage(
             string name,
             long channel,
-            Stream fileStream);
+            string file);
 
         public abstract Task<KhEventFile> UploadFile(
             string name,
             long channel,
-            Stream fileStream);
+            string file);
 
         #endregion
 
