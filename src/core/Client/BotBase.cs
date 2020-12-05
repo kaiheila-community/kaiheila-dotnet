@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Kaiheila.Data;
 using Kaiheila.Events;
@@ -89,6 +90,20 @@ namespace Kaiheila.Client
 
             foreach (KhEventBase khEvent in khEvents) await SendEvent(khEvent, target);
         }
+
+        #endregion
+
+        #region Upload
+
+        public abstract Task<KhEventImage> UploadImage(
+            string name,
+            long channel,
+            Stream fileStream);
+
+        public abstract Task<KhEventFile> UploadFile(
+            string name,
+            long channel,
+            Stream fileStream);
 
         #endregion
 
