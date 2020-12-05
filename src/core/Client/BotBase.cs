@@ -47,12 +47,7 @@ namespace Kaiheila.Client
             KhEventBase khEvent,
             KhEventBase target)
         {
-            if (target is not null)
-            {
-                khEvent.ChannelId = target.ChannelId;
-                khEvent.ChannelName = target.ChannelName;
-                khEvent.Guild = target.Guild;
-            }
+            if (target is not null) khEvent.ChannelId = target.ChannelId;
 
             await khEvent.Send(this);
         }
