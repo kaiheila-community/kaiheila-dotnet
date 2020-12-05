@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Kaiheila.Client;
 
 namespace Kaiheila.Events
 {
@@ -9,5 +11,11 @@ namespace Kaiheila.Events
             if (Type != "assets")
                 throw new InvalidOperationException($"类型{Type}不是\"assets\"。");
         }
+
+        public override async Task Send(BotBase bot) =>
+            await bot.SendImageMessage(
+                ChannelId,
+                KhEventAsset.AssetsPrefix + Path,
+                Name);
     }
 }
