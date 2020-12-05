@@ -149,6 +149,8 @@ namespace Kaiheila.Client.V2
 
         #region Upload
 
+        private const string Boundary = "----WebKitFormBoundaryheEi6UpgP9In8jez";
+
         public override async Task<KhEventImage> UploadImage(
             string name,
             long channel,
@@ -156,14 +158,14 @@ namespace Kaiheila.Client.V2
         {
             // Construct Request
             HttpWebRequest request = CreateWebRequest(GetUri("/assets"), true);
-            request.ContentType = "multipart/form-data";
+            request.ContentType = "multipart/form-data; boundary=" + Boundary;
 
             // Initialize Content
-            MultipartFormDataContent content = new MultipartFormDataContent
+            MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
             {
-                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "image"},
-                {new StringContent("image"), "type"},
-                {new StringContent(channel.ToString()), "channel_id"}
+                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "\"image\"", $"\"{name}\""},
+                {new StringContent("image"), "\"type\""},
+                {new StringContent(channel.ToString()), "\"channel_id\""}
             };
 
             await content.CopyToAsync(request.GetRequestStream());
@@ -189,14 +191,14 @@ namespace Kaiheila.Client.V2
         {
             // Construct Request
             HttpWebRequest request = CreateWebRequest(GetUri("/assets/file"), true);
-            request.ContentType = "multipart/form-data";
+            request.ContentType = "multipart/form-data; boundary=" + Boundary;
 
             // Initialize Content
-            MultipartFormDataContent content = new MultipartFormDataContent
+            MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
             {
-                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "file"},
-                {new StringContent(channel.ToString()), "channel_id"},
-                {new StringContent(name), "filename"}
+                {new StreamContent(await AssetsHelper.GetAssetFile(file)), "\"file\"", $"\"{name}\""},
+                {new StringContent(channel.ToString()), "\"channel_id\""},
+                {new StringContent(name), "\"filename\""}
             };
 
             await content.CopyToAsync(request.GetRequestStream());
