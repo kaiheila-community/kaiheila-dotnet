@@ -161,7 +161,7 @@ namespace Kaiheila.Client.V2
             request.ContentType = "multipart/form-data; boundary=" + Boundary;
 
             // Initialize Content
-            MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
+            using MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
             {
                 {new StreamContent(await AssetsHelper.GetAssetFile(file)), "\"image\"", $"\"{name}\""},
                 {new StringContent("image"), "\"type\""},
@@ -194,7 +194,7 @@ namespace Kaiheila.Client.V2
             request.ContentType = "multipart/form-data; boundary=" + Boundary;
 
             // Initialize Content
-            MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
+            using MultipartFormDataContent content = new MultipartFormDataContent(Boundary)
             {
                 {new StreamContent(await AssetsHelper.GetAssetFile(file)), "\"file\"", $"\"{name}\""},
                 {new StringContent(channel.ToString()), "\"channel_id\""},
