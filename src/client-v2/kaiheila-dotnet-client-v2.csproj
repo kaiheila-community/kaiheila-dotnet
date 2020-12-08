@@ -3,6 +3,18 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Kaiheila.Client.V2</RootNamespace>
+    <Version>0.1.0</Version>
+    <PackageId>Kaiheila.Client.V2</PackageId>
+    <Authors>Il Harper</Authors>
+    <Product>Kaiheila.Client.V2</Product>
+    <Description>开黑啦V2客户端协议，用于开黑啦 .NET 5 SDK。</Description>
+    <Copyright>2020 Il Harper</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kaiheila-community/kaiheila-dotnet</PackageProjectUrl>
+    <PackageIcon>kaiheila.png</PackageIcon>
+    <RepositoryUrl>https://github.com/kaiheila-community/kaiheila-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>kaiheila,sdk,client</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +25,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\kaiheila-dotnet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Assets\kaiheila.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
