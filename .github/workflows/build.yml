@@ -44,6 +44,7 @@ jobs:
       run: dotnet build kaiheila-dotnet.sln --configuration Release --no-restore
     - name: Pack
       run: dotnet pack kaiheila-dotnet.sln -o src/bin/publish/ --configuration Release --no-restore
+    - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:
         name: kaiheila-dotnet-nupkg-${{ github.sha }}
