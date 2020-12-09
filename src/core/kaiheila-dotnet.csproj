@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Kaiheila</RootNamespace>
     <PackageId>Kaiheila</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.0.1</Version>
     <Authors>Il Harper</Authors>
     <Product>Kaiheila</Product>
     <Description>开黑啦 .NET 5 SDK。</Description>
