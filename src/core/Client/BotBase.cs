@@ -26,22 +26,43 @@ namespace Kaiheila.Client
 
         #region Message
 
-        public abstract Task SendTextMessage(
+        protected internal abstract Task<BotBase> SendTextMessage(
             long channel,
             string message);
 
-        public async Task SendEvent(
-            KhEventBase khEvent,
-            KhEventBase target)
-        {
-            if (target is not null) khEvent.ChannelId = target.ChannelId;
+        #endregion
 
-            await khEvent.Send(this);
+        #region Dispose
+
+        public abstract void Dispose();
+
+        #endregion
+    }
+
+    public static class BotExtensions
+    {
+        #region Message
+
+        public static async Task<BotBase> SendEvent(
+            this BotBase bot,
+            KhEventBase khEvent)
+        {
+            await khEvent.Send(bot);
+            return bot;
         }
 
-        public async Task SendEvents(
+        public static async Task<BotBase> SendEvent(
+            this Task<BotBase> task,
+            KhEventBase khEvent)
+        {
+            BotBase bot = await task;
+            await bot.SendEvent(khEvent);
+            return bot;
+        }
+
+        public static async Task<BotBase> SendEvents(
+            this BotBase bot,
             IList<KhEventBase> khEvents,
-            KhEventBase target,
             KhEventCombinerHost combinerHost = null)
         {
             combinerHost ??= new KhEventCombinerHost(new Logger<KhEventCombinerHost>(new NullLoggerFactory()));
@@ -70,14 +91,20 @@ namespace Kaiheila.Client
                 if (!flag) break;
             }
 
-            foreach (KhEventBase khEvent in khEvents) await SendEvent(khEvent, target);
+            foreach (KhEventBase khEvent in khEvents) await bot.SendEvent(khEvent);
+
+            return bot;
         }
 
-        #endregion
-
-        #region Dispose
-
-        public abstract void Dispose();
+        public static async Task<BotBase> SendEvents(
+            this Task<BotBase> task,
+            IList<KhEventBase> khEvents,
+            KhEventCombinerHost combinerHost = null)
+        {
+            BotBase bot = await task;
+            await bot.SendEvents(khEvents, combinerHost);
+            return bot;
+        }
 
         #endregion
     }
