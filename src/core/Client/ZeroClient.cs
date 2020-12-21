@@ -11,10 +11,8 @@ namespace Kaiheila.Client
             Event = Observable.Empty<KhEventBase>();
         }
 
-        public override Task SendTextMessage(long channel, string message)
-        {
+        protected internal override Task<BotBase> SendTextMessage(long channel, string message) =>
             throw new System.NotImplementedException();
-        }
 
         public override void Dispose()
         {
