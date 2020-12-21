@@ -13,9 +13,8 @@ namespace Kaiheila.Events
         }
 
         public override async Task Send(BotBase bot) =>
-            await bot.SendImageMessage(
+            await bot.SendTextMessage(
                 ChannelId,
-                KhEventAsset.AssetsPrefix + Path,
-                Name);
+                $"（图片： {AssetsPrefix + Path} ）");
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Kaiheila.Data;
 using Kaiheila.Events;
 using Kaiheila.Events.Combiners;
 using Microsoft.Extensions.Logging;
@@ -26,22 +24,11 @@ namespace Kaiheila.Client
 
         #endregion
 
-        #region User
-
-        public KhUser Self { get; protected set; }
-
-        #endregion
-
         #region Message
 
         public abstract Task SendTextMessage(
             long channel,
             string message);
-
-        public abstract Task SendImageMessage(
-            long channel,
-            string imageUrl,
-            string imageName);
 
         public async Task SendEvent(
             KhEventBase khEvent,
@@ -85,34 +72,6 @@ namespace Kaiheila.Client
 
             foreach (KhEventBase khEvent in khEvents) await SendEvent(khEvent, target);
         }
-
-        #endregion
-
-        #region Upload
-
-        public abstract Task<KhEventImage> UploadImage(
-            string name,
-            long channel,
-            string file);
-
-        public abstract Task<KhEventFile> UploadFile(
-            string name,
-            long channel,
-            string file);
-
-        #endregion
-
-        #region Friend
-
-        public abstract Task<KhUser> GetUserState(long user = 0);
-
-        public abstract Task<List<KhUser>> GetFriends(KhFriendsType type);
-
-        #endregion
-
-        #region Channel
-
-        public abstract Task<KhChannel> GetChannelState(long channelId);
 
         #endregion
 
