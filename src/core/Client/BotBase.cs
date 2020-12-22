@@ -43,7 +43,7 @@ namespace Kaiheila.Client
     {
         #region Message
 
-        public static async Task<BotBase> SendEvent(
+        public static async Task<BotBase> Send(
             this BotBase bot,
             KhEventBase khEvent)
         {
@@ -51,16 +51,16 @@ namespace Kaiheila.Client
             return bot;
         }
 
-        public static async Task<BotBase> SendEvent(
+        public static async Task<BotBase> Send(
             this Task<BotBase> task,
             KhEventBase khEvent)
         {
             BotBase bot = await task;
-            await bot.SendEvent(khEvent);
+            await bot.Send(khEvent);
             return bot;
         }
 
-        public static async Task<BotBase> SendEvents(
+        public static async Task<BotBase> Send(
             this BotBase bot,
             IList<KhEventBase> khEvents,
             KhEventCombinerHost combinerHost = null)
@@ -91,18 +91,18 @@ namespace Kaiheila.Client
                 if (!flag) break;
             }
 
-            foreach (KhEventBase khEvent in khEvents) await bot.SendEvent(khEvent);
+            foreach (KhEventBase khEvent in khEvents) await bot.Send(khEvent);
 
             return bot;
         }
 
-        public static async Task<BotBase> SendEvents(
+        public static async Task<BotBase> Send(
             this Task<BotBase> task,
             IList<KhEventBase> khEvents,
             KhEventCombinerHost combinerHost = null)
         {
             BotBase bot = await task;
-            await bot.SendEvents(khEvents, combinerHost);
+            await bot.Send(khEvents, combinerHost);
             return bot;
         }
 
