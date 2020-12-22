@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Kaiheila.Events;
 using Kaiheila.Events.Combiners;
@@ -21,6 +24,20 @@ namespace Kaiheila.Client
         public IObservable<KhEventBase> Event { get; protected set; }
 
         protected IObserver<KhEventBase> EventObserver;
+
+        #endregion
+
+        #region Constructor
+
+        protected BotBase()
+        {
+            Event = Observable.Create<KhEventBase>(observer =>
+                {
+                    EventObserver = observer;
+                    return Disposable.Empty;
+                })
+                .SubscribeOn(Scheduler.Default);
+        }
 
         #endregion
 
