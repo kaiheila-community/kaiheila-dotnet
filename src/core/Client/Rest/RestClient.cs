@@ -3,13 +3,13 @@ using System.Net;
 using System.Threading.Tasks;
 using Kaiheila.Net;
 
-namespace Kaiheila.Client
+namespace Kaiheila.Client.Rest
 {
     public class RestClient : BotBase
     {
         #region Consts
 
-        public const string BaseUrl = @"https://www.kaiheila.cn/api/v";
+        internal const string BaseUrl = @"https://www.kaiheila.cn/api/v";
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace Kaiheila.Client
 
         #region Request Utils
 
-        public static HttpWebRequest CreateRequest(
+        internal static HttpWebRequest CreateRequest(
             string endpoint,
             bool post = false) =>
             RequestHelper.CreateWebRequest(BaseUrl + endpoint, post);
