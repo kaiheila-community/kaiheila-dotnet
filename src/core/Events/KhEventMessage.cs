@@ -14,7 +14,7 @@ namespace Kaiheila.Events
 
         [Required]
         [JsonProperty("timestamp")]
-        public string Timestamp;
+        public long Timestamp;
 
         [Required]
         [JsonProperty("target_id")]

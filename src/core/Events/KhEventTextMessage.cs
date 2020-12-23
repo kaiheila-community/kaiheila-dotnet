@@ -5,10 +5,15 @@ namespace Kaiheila.Events
 {
     public class KhEventTextMessage : KhEventMessage
     {
-        public override async Task Send(Bot bot) =>
-            await bot.SendTextMessage(
+        public override async Task Send(Bot bot)
+        {
+            var (msgId, msgTimestamp) = await bot.SendTextMessage(
                 1,
                 TargetId,
                 Content);
+
+            Id = msgId;
+            Timestamp = msgTimestamp;
+        }
     }
 }
