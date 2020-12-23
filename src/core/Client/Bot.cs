@@ -45,7 +45,7 @@ namespace Kaiheila.Client
 
         #region Message
 
-        protected internal abstract Task<Bot> SendTextMessage(
+        protected internal abstract Task SendTextMessage(
             int type,
             long channel,
             string message,

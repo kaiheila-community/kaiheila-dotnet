@@ -8,7 +8,7 @@ namespace Kaiheila.Client
     {
         public override void Start() => throw new System.NotImplementedException();
 
-        protected internal override Task<Bot> SendTextMessage(
+        protected internal override Task SendTextMessage(
             int type,
             long channel,
             string message,

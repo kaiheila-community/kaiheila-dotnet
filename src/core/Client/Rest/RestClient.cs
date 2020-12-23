@@ -37,21 +37,29 @@ namespace Kaiheila.Client.Rest
 
         private HttpWebRequest CreateRequest(
             string endpoint,
-            bool post = false) =>
-            RequestHelper.CreateWebRequest(
-            Options.BaseUrl + (Options.APIVersion > 0 ? Options.APIVersion.ToString() : "") + endpoint, post);
+            bool post = false)
+        {
+            HttpWebRequest request = RequestHelper.CreateWebRequest(
+                Options.BaseUrl + (Options.APIVersion > 0 ? Options.APIVersion.ToString() : "") + endpoint, post);
+
+            request.Headers.Add("Authorization", Options.AuthorizationHeader);
+
+            if (post) request.ContentType = "application/json";
+
+            return request;
+        }
 
         #endregion
 
         #region Message
 
-        protected internal override Task<Bot> SendTextMessage(
+        protected internal override Task SendTextMessage(
             int type,
             long channel,
             string message,
             string quote = null)
         {
-            throw new NotImplementedException();
+            HttpWebRequest request = CreateRequest(@"/channel/message", true);
         }
 
         #endregion
