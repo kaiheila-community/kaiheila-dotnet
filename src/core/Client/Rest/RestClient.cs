@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Runtime.Serialization;
+using System.Text;
 using System.Threading.Tasks;
 using Kaiheila.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Kaiheila.Client.Rest
 {
@@ -49,17 +53,79 @@ namespace Kaiheila.Client.Rest
             return request;
         }
 
+        private async Task<JToken> Post(
+            string endpoint,
+            JToken payload)
+        {
+            try
+            {
+                HttpWebRequest request = CreateRequest(endpoint, true);
+
+                // Write payload
+                StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.UTF8);
+                await writer.WriteAsync(payload.ToString());
+
+                JObject response =
+                    JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                        .ReadToEndAsync());
+
+                // ReSharper disable PossibleNullReferenceException
+
+                if (response["code"].ToObject<int>() != 0)
+                    throw new RestClientException(response["code"].ToObject<int>(),
+                        response["message"].ToObject<string>());
+
+                // ReSharper restore PossibleNullReferenceException
+
+                return response["data"];
+            }
+            catch (RestClientException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new RestClientException(0, string.Empty, e);
+            }
+        }
+
         #endregion
 
         #region Message
 
-        protected internal override Task SendTextMessage(
+        protected internal override async Task<(string, long)> SendTextMessage(
             int type,
             long channel,
-            string message,
+            string content,
             string quote = null)
         {
-            HttpWebRequest request = CreateRequest(@"/channel/message", true);
+            JToken response =
+                await Post(
+                    @"/channel/message",
+                    JObject.FromObject(
+                        new
+                        {
+                            object_name = type,
+                            channel_id = channel,
+                            content,
+                            quote
+                        }));
+
+            try
+            {
+                // ReSharper disable PossibleNullReferenceException
+
+                string msgId = response["msg_id"].ToObject<string>();
+                long msgTimestamp = response["msg_timestamp"].ToObject<long>();
+
+                // ReSharper restore PossibleNullReferenceException
+
+                return (msgId, msgTimestamp);
+            }
+            catch (Exception e)
+            {
+                throw new RestClientException(0, string.Empty, e);
+            }
         }
 
         #endregion
@@ -67,5 +133,25 @@ namespace Kaiheila.Client.Rest
         public override void Dispose()
         {
         }
+    }
+
+    [Serializable]
+    public class RestClientException : Exception
+    {
+        public RestClientException()
+        {
+        }
+
+        public RestClientException(int errCode, string message) : base(message)
+        {
+            ErrCode = errCode;
+        }
+
+        public RestClientException(int errCode, string message, Exception inner) : base(message, inner)
+        {
+            ErrCode = errCode;
+        }
+
+        public int ErrCode { get; set; }
     }
 }

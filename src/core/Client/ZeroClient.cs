@@ -8,10 +8,10 @@ namespace Kaiheila.Client
     {
         public override void Start() => throw new System.NotImplementedException();
 
-        protected internal override Task SendTextMessage(
+        protected internal override Task<(string, long)> SendTextMessage(
             int type,
             long channel,
-            string message,
+            string content,
             string quote = null) =>
             throw new NotImplementedException();
 
