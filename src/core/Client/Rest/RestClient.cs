@@ -62,8 +62,8 @@ namespace Kaiheila.Client.Rest
                 HttpWebRequest request = CreateRequest(endpoint, true);
 
                 // Write payload
-                StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.UTF8);
-                await writer.WriteAsync(payload.ToString());
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(payload.ToString()));
+                await stream.CopyToAsync(request.GetRequestStream());
 
                 JObject response =
                     JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
