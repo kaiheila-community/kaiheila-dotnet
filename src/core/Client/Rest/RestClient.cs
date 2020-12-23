@@ -5,42 +5,46 @@ using Kaiheila.Net;
 
 namespace Kaiheila.Client.Rest
 {
-    public class RestClient : BotBase
+    public class RestClient : Bot
     {
         #region Constructor
 
         public RestClient(
-            AuthorizationType authorizationType,
-            string token)
+            RestClientOptions options)
         {
-            AuthorizationHeader = authorizationType switch
-            {
-                AuthorizationType.Bot => $"Bot {token}",
-                AuthorizationType.Oauth2 => $"Bearer {token}",
-                _ => throw new ArgumentOutOfRangeException(nameof(authorizationType)),
-            };
+            Options = options;
+        }
+
+        public static RestClientBuilder CreateRestClient() => new RestClientBuilder();
+
+        #endregion
+
+        #region Lifecycle
+
+        public override void Start()
+        {
         }
 
         #endregion
 
-        #region Authorization
+        #region Options
 
-        public string AuthorizationHeader;
+        public readonly RestClientOptions Options;
 
         #endregion
 
         #region Request Utils
 
-        internal static HttpWebRequest CreateRequest(
+        internal HttpWebRequest CreateRequest(
             string endpoint,
             bool post = false) =>
-            RequestHelper.CreateWebRequest(BaseUrl + endpoint, post);
+            RequestHelper.CreateWebRequest(Options.BaseUrl + endpoint, post);
 
         #endregion
 
         #region Message
 
-        protected internal override Task<BotBase> SendTextMessage(long channel, string message)
+        protected internal override Task<Bot> SendTextMessage(long channel, string message)
         {
             throw new NotImplementedException();
         }
