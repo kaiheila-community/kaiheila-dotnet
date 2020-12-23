@@ -7,6 +7,6 @@ namespace Kaiheila.Events
     {
         public string Content;
 
-        public override async Task Send(BotBase bot) => await bot.SendTextMessage(ChannelId, Content);
+        public override async Task Send(Bot bot) => await bot.SendTextMessage(ChannelId, Content);
     }
 }

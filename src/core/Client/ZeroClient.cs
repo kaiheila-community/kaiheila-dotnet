@@ -1,17 +1,12 @@
-﻿using System.Reactive.Linq;
-using System.Threading.Tasks;
-using Kaiheila.Events;
+﻿using System.Threading.Tasks;
 
 namespace Kaiheila.Client
 {
-    public class ZeroClient : BotBase
+    public class ZeroClient : Bot
     {
-        public ZeroClient()
-        {
-            Event = Observable.Empty<KhEventBase>();
-        }
+        public override void Start() => throw new System.NotImplementedException();
 
-        protected internal override Task<BotBase> SendTextMessage(long channel, string message) =>
+        protected internal override Task<Bot> SendTextMessage(long channel, string message) =>
             throw new System.NotImplementedException();
 
         public override void Dispose()

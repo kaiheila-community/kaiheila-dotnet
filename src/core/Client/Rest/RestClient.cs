@@ -7,12 +7,6 @@ namespace Kaiheila.Client.Rest
 {
     public class RestClient : BotBase
     {
-        #region Consts
-
-        internal const string BaseUrl = @"https://www.kaiheila.cn/api/v";
-
-        #endregion
-
         #region Constructor
 
         public RestClient(
@@ -56,11 +50,5 @@ namespace Kaiheila.Client.Rest
         public override void Dispose()
         {
         }
-    }
-
-    public enum AuthorizationType
-    {
-        Bot = 0,
-        Oauth2 = 1
     }
 }

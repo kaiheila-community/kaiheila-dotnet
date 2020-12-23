@@ -1,92 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Kaiheila.Events;
 using Kaiheila.Events.Combiners;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Newtonsoft.Json;
 
 namespace Kaiheila.Client
 {
-    /// <summary>
-    /// Kaiheila机器人。
-    /// </summary>
-    public abstract class BotBase : IDisposable
+    [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
+    public class BotOptions
     {
-        #region Event
+        #region Authorization
 
-        /// <summary>
-        /// 机器人事件Observable。
-        /// </summary>
-        public IObservable<KhEventBase> Event { get; protected set; }
+        [Required]
+        [JsonProperty("authorizationType")]
+        public AuthorizationType AuthorizationType { get; set; } = AuthorizationType.Bot;
 
-        protected IObserver<KhEventBase> EventObserver;
-
-        #endregion
-
-        #region Constructor
-
-        protected BotBase()
-        {
-            Event = Observable.Create<KhEventBase>(observer =>
-                {
-                    EventObserver = observer;
-                    return Disposable.Empty;
-                })
-                .SubscribeOn(Scheduler.Default);
-        }
+        [Required]
+        [JsonProperty("authorizationHeader")]
+        public string AuthorizationHeader { get; set; } = "";
 
         #endregion
+    }
 
-        #region Lifecycle
-
-        public void Start()
-        {
-        }
-
-        #endregion
-
-        #region Message
-
-        protected internal abstract Task<BotBase> SendTextMessage(
-            long channel,
-            string message);
-
-        #endregion
-
-        #region Dispose
-
-        public abstract void Dispose();
-
-        #endregion
+    public enum AuthorizationType
+    {
+        Bot = 0,
+        Oauth2 = 1
     }
 
     public static class BotExtensions
     {
         #region Message
 
-        public static async Task<BotBase> Send(
-            this BotBase bot,
+        public static async Task<Bot> Send(
+            this Bot bot,
             KhEventBase khEvent)
         {
             await khEvent.Send(bot);
             return bot;
         }
 
-        public static async Task<BotBase> Send(
-            this Task<BotBase> task,
+        public static async Task<Bot> Send(
+            this Task<Bot> task,
             KhEventBase khEvent)
         {
-            BotBase bot = await task;
+            Bot bot = await task;
             await bot.Send(khEvent);
             return bot;
         }
 
-        public static async Task<BotBase> Send(
-            this BotBase bot,
+        public static async Task<Bot> Send(
+            this Bot bot,
             IList<KhEventBase> khEvents,
             KhEventCombinerHost combinerHost = null)
         {
@@ -121,14 +90,36 @@ namespace Kaiheila.Client
             return bot;
         }
 
-        public static async Task<BotBase> Send(
-            this Task<BotBase> task,
+        public static async Task<Bot> Send(
+            this Task<Bot> task,
             IList<KhEventBase> khEvents,
             KhEventCombinerHost combinerHost = null)
         {
-            BotBase bot = await task;
+            Bot bot = await task;
             await bot.Send(khEvents, combinerHost);
             return bot;
+        }
+
+        #endregion
+
+        #region Options Builder
+
+        public static BotOptions UseBotAuthorization(
+            this BotOptions options,
+            string token)
+        {
+            options.AuthorizationType = AuthorizationType.Bot;
+            options.AuthorizationHeader = $"Bot {token}";
+            return options;
+        }
+
+        public static BotOptions UseOauth2Authorization(
+            this BotOptions options,
+            string token)
+        {
+            options.AuthorizationType = AuthorizationType.Oauth2;
+            options.AuthorizationHeader = $"Bearer {token}";
+            return options;
         }
 
         #endregion

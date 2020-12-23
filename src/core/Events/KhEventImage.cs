@@ -12,7 +12,7 @@ namespace Kaiheila.Events
                 throw new InvalidOperationException($"类型{Type}不是\"assets\"。");
         }
 
-        public override async Task Send(BotBase bot) =>
+        public override async Task Send(Bot bot) =>
             await bot.SendTextMessage(
                 ChannelId,
                 $"（图片： {AssetsPrefix + Path} ）");

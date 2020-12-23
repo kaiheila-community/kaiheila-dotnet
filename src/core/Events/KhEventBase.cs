@@ -19,7 +19,7 @@ namespace Kaiheila.Events
 
         #region Send
 
-        public virtual async Task Send(BotBase bot)
+        public virtual async Task Send(Bot bot)
         {
             // Abstract
             throw new NotImplementedException($"{GetType().Name}中无法调用Send()。");
