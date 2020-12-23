@@ -41,6 +41,14 @@ namespace Kaiheila.Client
 
         #endregion
 
+        #region Lifecycle
+
+        public void Start()
+        {
+        }
+
+        #endregion
+
         #region Message
 
         protected internal abstract Task<BotBase> SendTextMessage(
