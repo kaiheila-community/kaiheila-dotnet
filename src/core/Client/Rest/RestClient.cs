@@ -44,7 +44,11 @@ namespace Kaiheila.Client.Rest
 
         #region Message
 
-        protected internal override Task<Bot> SendTextMessage(long channel, string message)
+        protected internal override Task<Bot> SendTextMessage(
+            int type,
+            long channel,
+            string message,
+            string quote = null)
         {
             throw new NotImplementedException();
         }

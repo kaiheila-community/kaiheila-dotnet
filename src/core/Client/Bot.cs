@@ -46,8 +46,10 @@ namespace Kaiheila.Client
         #region Message
 
         protected internal abstract Task<Bot> SendTextMessage(
+            int type,
             long channel,
-            string message);
+            string message,
+            string quote = null);
 
         #endregion
 
