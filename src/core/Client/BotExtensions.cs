@@ -17,11 +17,11 @@ namespace Kaiheila.Client
         #region Authorization
 
         [Required]
-        [JsonProperty("authorizationType")]
+        [JsonProperty("authorization_type")]
         public AuthorizationType AuthorizationType { get; set; } = AuthorizationType.Bot;
 
         [Required]
-        [JsonProperty("authorizationHeader")]
+        [JsonProperty("authorization_header")]
         public string AuthorizationHeader { get; set; } = "";
 
         #endregion

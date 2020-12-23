@@ -9,11 +9,11 @@ namespace Kaiheila.Client.Rest
     public class RestClientOptions : BotOptions
     {
         [Required]
-        [JsonProperty("baseUrl")]
+        [JsonProperty("base_url")]
         public string BaseUrl { get; set; } = @"https://www.kaiheila.cn/api/v";
 
         [Required]
-        [JsonProperty("apiVersion")]
+        [JsonProperty("api_version")]
         // ReSharper disable once InconsistentNaming
         public int APIVersion { get; set; }
     }
