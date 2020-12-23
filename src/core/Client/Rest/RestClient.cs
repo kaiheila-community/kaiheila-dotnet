@@ -35,10 +35,11 @@ namespace Kaiheila.Client.Rest
 
         #region Request Utils
 
-        internal HttpWebRequest CreateRequest(
+        private HttpWebRequest CreateRequest(
             string endpoint,
             bool post = false) =>
-            RequestHelper.CreateWebRequest(Options.BaseUrl + endpoint, post);
+            RequestHelper.CreateWebRequest(
+            Options.BaseUrl + (Options.APIVersion > 0 ? Options.APIVersion.ToString() : "") + endpoint, post);
 
         #endregion
 

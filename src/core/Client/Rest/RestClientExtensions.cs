@@ -8,13 +8,14 @@ namespace Kaiheila.Client.Rest
     [JsonObject(MemberSerialization.OptIn)]
     public class RestClientOptions : BotOptions
     {
-        #region Connection
-
         [Required]
         [JsonProperty("baseUrl")]
         public string BaseUrl { get; set; } = @"https://www.kaiheila.cn/api/v";
 
-        #endregion
+        [Required]
+        [JsonProperty("apiVersion")]
+        // ReSharper disable once InconsistentNaming
+        public int APIVersion { get; set; }
     }
 
     public class RestClientBuilder
@@ -38,6 +39,21 @@ namespace Kaiheila.Client.Rest
             string baseUrl)
         {
             options.BaseUrl = baseUrl;
+            return options;
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public static RestClientOptions UseLatestAPI(
+            this RestClientOptions options,
+            int apiVersion = 0) =>
+            options.UseAPIVersion();
+
+        // ReSharper disable once InconsistentNaming
+        public static RestClientOptions UseAPIVersion(
+            this RestClientOptions options,
+            int apiVersion = 0)
+        {
+            options.APIVersion = apiVersion;
             return options;
         }
 
