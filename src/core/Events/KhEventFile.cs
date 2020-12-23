@@ -2,6 +2,7 @@
 
 namespace Kaiheila.Events
 {
+    [Obsolete]
     public class KhEventFile : KhEventAsset
     {
         public KhEventFile(

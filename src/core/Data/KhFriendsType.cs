@@ -2,6 +2,7 @@
 
 namespace Kaiheila.Data
 {
+    [Obsolete]
     public enum KhFriendsType
     {
         Friend = 0,
@@ -9,6 +10,7 @@ namespace Kaiheila.Data
         Blocked = 2
     }
 
+    [Obsolete]
     public static class KhFriends
     {
         public static string GetTypeString(this KhFriendsType type) =>

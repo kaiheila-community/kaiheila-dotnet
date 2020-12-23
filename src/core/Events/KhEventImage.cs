@@ -4,6 +4,7 @@ using Kaiheila.Client;
 
 namespace Kaiheila.Events
 {
+    [Obsolete]
     public class KhEventImage : KhEventAsset
     {
         public KhEventImage(string path, string name) : base(path, name)
@@ -14,6 +15,7 @@ namespace Kaiheila.Events
 
         public override async Task Send(Bot bot) =>
             await bot.SendTextMessage(
+                1,
                 ChannelId,
                 $"（图片： {AssetsPrefix + Path} ）");
     }

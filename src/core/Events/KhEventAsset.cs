@@ -1,7 +1,9 @@
-﻿using Kaiheila.Assets;
+﻿using System;
+using Kaiheila.Assets;
 
 namespace Kaiheila.Events
 {
+    [Obsolete]
     public abstract class KhEventAsset : KhEventBase
     {
         public const string AssetsPrefix = @"https://img.kaiheila.cn";

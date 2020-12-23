@@ -1,5 +1,8 @@
-﻿namespace Kaiheila.Data
+﻿using System;
+
+namespace Kaiheila.Data
 {
+    [Obsolete]
     public class KhChannel
     {
         public long Guild;
