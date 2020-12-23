@@ -6,8 +6,6 @@ namespace Kaiheila.Events
 {
     public class KhEventBase
     {
-        public long ChannelId;
-
         #region Send
 
         public virtual async Task Send(Bot bot)

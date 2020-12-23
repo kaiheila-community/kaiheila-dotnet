@@ -3,14 +3,12 @@ using Kaiheila.Client;
 
 namespace Kaiheila.Events
 {
-    public class KhEventTextMessage : KhEventBase
+    public class KhEventTextMessage : KhEventMessage
     {
-        public string Content;
-
         public override async Task Send(Bot bot) =>
             await bot.SendTextMessage(
                 1,
-                ChannelId,
+                TargetId,
                 Content);
     }
 }
