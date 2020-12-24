@@ -48,7 +48,8 @@ namespace Kaiheila.Client.WebHook
                 .UseUrls($"http://0.0.0.0:{Options.Port}")
                 .Configure(builder =>
                 {
-
+                    builder
+                        .UseWebHookClientExceptionHandler();
                 });
 
         #endregion
