@@ -15,9 +15,13 @@ namespace Kaiheila.Client.WebHook
 
         private readonly RequestDelegate _next;
 
-        public async Task InvokeAsync(HttpContext context) =>
+        public async Task InvokeAsync(HttpContext context)
+        {
             context.Items[WebHookClientExtensions.PayloadKey] =
                 JObject.Parse((context.Items[WebHookClientExtensions.PayloadKey] as string)!);
+
+            await _next(context);
+        }
     }
 
     public static class WebHookClientDeserializerExtensions
