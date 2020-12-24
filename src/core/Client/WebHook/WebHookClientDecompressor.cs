@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Text;
 using System.Threading.Tasks;
 using Kaiheila.Net;
 using Microsoft.AspNetCore.Builder;
@@ -31,16 +32,24 @@ namespace Kaiheila.Client.WebHook
             }
 
             // Decompress Deflate
+            MemoryStream stream = new MemoryStream();
+            await context.Request.Body.CopyToAsync(stream);
+            await context.Request.Body.DisposeAsync();
 
-            DeflateStream deflateStream = new DeflateStream(context.Request.Body, CompressionMode.Decompress);
-
-            context.Items[WebHookClientExtensions.PayloadKey] =
-                await new StreamReader(deflateStream).ReadToEndAsync();
-
+            DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true);
+            MemoryStream resultStream = new MemoryStream();
+            await deflateStream.CopyToAsync(resultStream);
             await deflateStream.DisposeAsync();
+            await stream.DisposeAsync();
+
+            StreamReader reader = new StreamReader(resultStream);
+            string result = await reader.ReadToEndAsync();
+            await resultStream.DisposeAsync();
+
+            context.Items[WebHookClientExtensions.PayloadKey] = result;
+            reader.Dispose();
 
             await _next(context);
-            return;
         }
     }
 
