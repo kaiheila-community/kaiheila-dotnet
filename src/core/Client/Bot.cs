@@ -17,7 +17,7 @@ namespace Kaiheila.Client
         /// <summary>
         /// 机器人事件Observable。
         /// </summary>
-        public IObservable<KhEventBase> Event { get; }
+        public IObservable<KhEventBase> Event { get; protected set; }
 
         protected IObserver<KhEventBase> EventObserver;
 
