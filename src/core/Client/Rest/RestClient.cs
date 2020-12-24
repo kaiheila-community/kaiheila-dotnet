@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Kaiheila.Net;
@@ -13,7 +12,7 @@ namespace Kaiheila.Client.Rest
     {
         #region Constructor
 
-        public RestClient(
+        internal RestClient(
             RestClientOptions options)
         {
             Options = options;
