@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Kaiheila.Net
 {
@@ -20,5 +23,9 @@ namespace Kaiheila.Net
 
             return request;
         }
+
+        public static Task<string> ReadBodyAsStringAsync(
+            this HttpContext context) =>
+            new StreamReader(context.Request.Body).ReadToEndAsync();
     }
 }
