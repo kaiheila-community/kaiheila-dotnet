@@ -15,6 +15,10 @@ namespace Kaiheila.Client.WebHook
 
         [JsonProperty("encrypt_key")]
         public string EncryptKey { get; set; } = "";
+
+        [Required]
+        [JsonProperty("port")]
+        public int Port { get; set; }
     }
 
     public class WebHookClientBuilder
@@ -46,6 +50,14 @@ namespace Kaiheila.Client.WebHook
             string encryptKey)
         {
             options.EncryptKey = encryptKey;
+            return options;
+        }
+
+        public static WebHookClientOptions Listen(
+            this WebHookClientOptions options,
+            int port)
+        {
+            options.Port = port;
             return options;
         }
 
