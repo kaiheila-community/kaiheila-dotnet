@@ -50,7 +50,8 @@ namespace Kaiheila.Client.WebHook
                 {
                     builder
                         .UseWebHookClientExceptionHandler()
-                        .UseWebHookClientDecompressor();
+                        .UseWebHookClientDecompressor()
+                        .UseWebHookClientDeserializer();
                 });
 
         #endregion
