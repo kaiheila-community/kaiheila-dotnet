@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Kaiheila.Client.Rest;
 using Newtonsoft.Json;
 
@@ -68,5 +69,25 @@ namespace Kaiheila.Client.WebHook
         internal const string PayloadKey = "payload";
 
         #endregion
+    }
+
+    [Serializable]
+    public class WebHookClientException : Exception
+    {
+        public WebHookClientException()
+        {
+        }
+
+        public WebHookClientException(string message, string middlewareName) : base(message)
+        {
+            MiddlewareName = middlewareName;
+        }
+
+        public WebHookClientException(string message, string middlewareName, Exception inner) : base(message, inner)
+        {
+            MiddlewareName = middlewareName;
+        }
+
+        public string MiddlewareName { get; set; }
     }
 }
