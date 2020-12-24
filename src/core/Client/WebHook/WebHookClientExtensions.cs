@@ -62,6 +62,10 @@ namespace Kaiheila.Client.WebHook
             return options;
         }
 
+        public static WebHookClient Build(
+            this WebHookClientBuilder builder) =>
+            new WebHookClient(builder.Options);
+
         #endregion
 
         #region Middleware Const Keys
