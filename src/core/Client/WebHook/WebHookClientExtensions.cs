@@ -62,5 +62,11 @@ namespace Kaiheila.Client.WebHook
         }
 
         #endregion
+
+        #region Middleware Const Keys
+
+        internal const string PayloadKey = "payload";
+
+        #endregion
     }
 }
