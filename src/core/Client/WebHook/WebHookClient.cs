@@ -2,6 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Kaiheila.Client.Rest;
 using Kaiheila.Events;
 using Microsoft.AspNetCore.Hosting;
@@ -55,7 +56,9 @@ namespace Kaiheila.Client.WebHook
         {
             try
             {
-                return Options.EventParser.Parse(payload);
+                Task<KhEventBase> task = Options.EventParser.Parse(payload);
+                task.Wait();
+                return task.Result;
             }
             catch (EventParseException e)
             {
