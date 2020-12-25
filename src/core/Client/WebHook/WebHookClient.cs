@@ -50,10 +50,16 @@ namespace Kaiheila.Client.WebHook
 
         private new IObserver<JToken> EventObserver;
 
-        private KhEventBase ParseEvent(JToken arg)
+        private KhEventBase ParseEvent(JToken payload)
         {
-            System.Diagnostics.Debug.WriteLine(arg.ToString());
-            return new KhEventBase();
+            try
+            {
+                return Options.EventParser.Parse(payload);
+            }
+            catch (EventParseException e)
+            {
+                EventObserver.OnError(e);
+            }
         }
 
         #endregion
