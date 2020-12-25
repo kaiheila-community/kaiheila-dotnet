@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.IO.Compression;
-using System.Text;
 using System.Threading.Tasks;
 using Kaiheila.Net;
 using Microsoft.AspNetCore.Builder;
@@ -36,11 +35,20 @@ namespace Kaiheila.Client.WebHook
             await context.Request.Body.CopyToAsync(stream);
             await context.Request.Body.DisposeAsync();
 
+            // Magic headers of zlib:
+            // 78 01 - No Compression/low
+            // 78 9C - Default Compression
+            // 78 DA - Best Compression
+            stream.Position = 2;
+
             DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true);
             MemoryStream resultStream = new MemoryStream();
             await deflateStream.CopyToAsync(resultStream);
             await deflateStream.DisposeAsync();
             await stream.DisposeAsync();
+
+            // Rewind
+            resultStream.Position = 0;
 
             StreamReader reader = new StreamReader(resultStream);
             string result = await reader.ReadToEndAsync();
