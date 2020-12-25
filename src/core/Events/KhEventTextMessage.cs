@@ -10,9 +10,13 @@ namespace Kaiheila.Events
     {
         public override async Task Parse(JToken payload)
         {
+            // ReSharper disable PossibleNullReferenceException
+
             User.Id = payload["extra"]["author"]["id"].ToObject<long>();
             User.Username = payload["extra"]["author"]["username"].ToObject<string>();
             User.Nickname = payload["extra"]["author"]["nickname"].ToObject<string>();
+
+            // ReSharper restore PossibleNullReferenceException
         }
 
         public override async Task Send(Bot bot)
