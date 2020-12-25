@@ -23,6 +23,8 @@ namespace Kaiheila.Client.WebHook
 
         public async Task InvokeAsync(HttpContext context)
         {
+            if (_observer.Value is null) return;
+
             JObject payload = context.Items[WebHookClientExtensions.PayloadKey] as JObject;
 
             if (payload["s"] is not null && payload["s"].ToObject<int>() == 0)
