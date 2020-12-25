@@ -1,14 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 using Kaiheila.Client.Rest;
+using Kaiheila.Events;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 
 namespace Kaiheila.Client.WebHook
 {
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
-    public class WebHookClientOptions : RestClientOptions
+    public class WebHookClientOptions : RestClientOptions, IEventParserClientOptions
     {
         [Required]
         [JsonProperty("verify_token")]
@@ -20,6 +22,9 @@ namespace Kaiheila.Client.WebHook
         [Required]
         [JsonProperty("port")]
         public int Port { get; set; }
+
+        [NotMapped]
+        public EventParserHost EventParser { get; set; } = new EventParserHost(new NullLogger<EventParserHost>());
     }
 
     public class WebHookClientBuilder
