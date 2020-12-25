@@ -3,7 +3,7 @@ using Kaiheila.Client;
 
 namespace Kaiheila.Events
 {
-    public class KhEventTextMessage : KhEventMessage
+    public class KhEventTextMessage : KhEventBase
     {
         public override async Task Send(Bot bot)
         {
