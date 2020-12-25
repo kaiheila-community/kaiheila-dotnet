@@ -51,6 +51,7 @@ namespace Kaiheila.Client.WebHook
             }
 
             context.Response.StatusCode = 200;
+            context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsync(JObject.FromObject(new
             {
