@@ -51,4 +51,12 @@ namespace Kaiheila.Events
 
         #endregion
     }
+
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public sealed class KhEventAttribute : Attribute
+    {
+        public KhEventAttribute(string type) => Type = type;
+
+        public string Type { get; set; }
+    }
 }
