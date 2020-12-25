@@ -11,26 +11,26 @@ namespace Kaiheila.Client.WebHook
     {
         public WebHookClientEmitterMiddleware(
             RequestDelegate next,
-            IOptions<IObserver<JToken>> observer)
+            IOptions<Func<IObserver<JToken>>> getObserver)
         {
             _next = next;
-            _observer = observer;
+            _getObserver = getObserver;
         }
 
         private readonly RequestDelegate _next;
 
-        private readonly IOptions<IObserver<JToken>> _observer;
+        private readonly IOptions<Func<IObserver<JToken>>> _getObserver;
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (_observer.Value is null) return;
+            if (_getObserver.Value() is null) return;
 
             JObject payload = context.Items[WebHookClientExtensions.PayloadKey] as JObject;
 
             if (payload["s"] is not null && payload["s"].ToObject<int>() == 0)
             {
                 context.Response.StatusCode = 200;
-                _observer.Value.OnNext(payload["d"]);
+                _getObserver.Value().OnNext(payload["d"]);
                 return;
             }
 
@@ -42,10 +42,10 @@ namespace Kaiheila.Client.WebHook
     {
         internal static IApplicationBuilder UseWebHookClientEmitter(
             this IApplicationBuilder builder,
-            IObserver<JToken> observer)
+            Func<IObserver<JToken>> getObserver)
         {
             builder.UseMiddleware<WebHookClientEmitterMiddleware>(
-                Options.Create(observer));
+                Options.Create(getObserver));
             return builder;
         }
     }
