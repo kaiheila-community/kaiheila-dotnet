@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 
 namespace Kaiheila.Data
 {
-    [Obsolete]
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
     public class KhUser
@@ -13,5 +12,13 @@ namespace Kaiheila.Data
 
         [JsonProperty("username")]
         public string Username { get; set; } = "";
+
+        [JsonProperty("nickname")]
+        public string Nickname { get; set; } = "";
+    }
+
+    public interface IKhEventUser
+    {
+        public KhUser User { get; set; }
     }
 }
