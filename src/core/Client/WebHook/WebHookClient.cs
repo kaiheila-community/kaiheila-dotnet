@@ -17,15 +17,16 @@ namespace Kaiheila.Client.WebHook
         {
             Options = options;
 
-            _webHost = CreateWebHostBuilder().Build();
-
             Event = Observable.Create<JToken>(observer =>
                 {
                     EventObserver = observer;
                     return Disposable.Empty;
                 }).SubscribeOn(Scheduler.Default)
                 .Select(ParseEvent)
+                .Where(x => x is not null)
                 .SubscribeOn(Scheduler.Default);
+
+            _webHost = CreateWebHostBuilder().Build();
         }
 
         public static WebHookClientBuilder CreateWebHookClient() => new WebHookClientBuilder();
@@ -59,6 +60,7 @@ namespace Kaiheila.Client.WebHook
             catch (EventParseException e)
             {
                 EventObserver.OnError(e);
+                return null;
             }
         }
 
