@@ -80,7 +80,8 @@ namespace Kaiheila.Client.WebHook
                         .UseWebHookClientDeserializer()
                         .UseWebHookClientDecryptor(Options)
                         .UseWebHookClientChallengeHandler(Options)
-                        .UseWebHookClientEmitter(EventObserver);
+                        .UseWebHookClientEmitter(EventObserver)
+                        .UseWebHookClientShorter();
                 });
 
         #endregion
