@@ -7,11 +7,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Kaiheila.Client.WebHook
 {
-    class WebHookClientEmitterMiddleware
+    public class WebHookClientEmitterMiddleware
     {
         public WebHookClientEmitterMiddleware(
             RequestDelegate next,
-            IOptions<IObserver<JObject>> observer)
+            IOptions<IObserver<JToken>> observer)
         {
             _next = next;
             _observer = observer;
@@ -19,13 +19,20 @@ namespace Kaiheila.Client.WebHook
 
         private readonly RequestDelegate _next;
 
-        private readonly IOptions<IObserver<JObject>> _observer;
+        private readonly IOptions<IObserver<JToken>> _observer;
 
         public async Task InvokeAsync(HttpContext context)
         {
-            _observer.Value.OnNext(context.Items[WebHookClientExtensions.PayloadKey] as JObject);
+            JObject payload = context.Items[WebHookClientExtensions.PayloadKey] as JObject;
 
-            context.Response.StatusCode = 200;
+            if (payload["s"] is not null && payload["s"].ToObject<int>() == 0)
+            {
+                context.Response.StatusCode = 200;
+                _observer.Value.OnNext(payload["d"]);
+                return;
+            }
+
+            await _next(context);
         }
     }
 
@@ -33,7 +40,7 @@ namespace Kaiheila.Client.WebHook
     {
         internal static IApplicationBuilder UseWebHookClientEmitter(
             this IApplicationBuilder builder,
-            IObserver<JObject> observer)
+            IObserver<JToken> observer)
         {
             builder.UseMiddleware<WebHookClientEmitterMiddleware>(
                 Options.Create(observer));

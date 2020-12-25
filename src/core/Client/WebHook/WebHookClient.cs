@@ -19,7 +19,7 @@ namespace Kaiheila.Client.WebHook
 
             _webHost = CreateWebHostBuilder().Build();
 
-            Event = Observable.Create<JObject>(observer =>
+            Event = Observable.Create<JToken>(observer =>
                 {
                     EventObserver = observer;
                     return Disposable.Empty;
@@ -48,9 +48,9 @@ namespace Kaiheila.Client.WebHook
 
         #region Event
 
-        private new IObserver<JObject> EventObserver;
+        private new IObserver<JToken> EventObserver;
 
-        private KhEventBase ParseEvent(JObject arg)
+        private KhEventBase ParseEvent(JToken arg)
         {
             System.Diagnostics.Debug.WriteLine(arg.ToString());
             return new KhEventBase();
