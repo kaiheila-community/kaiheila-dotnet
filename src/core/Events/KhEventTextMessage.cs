@@ -12,6 +12,7 @@ namespace Kaiheila.Events
         {
             // ReSharper disable PossibleNullReferenceException
 
+            Raw = payload.ToString();
             User.Id = payload["extra"]["author"]["id"].ToObject<long>();
             User.Username = payload["extra"]["author"]["username"].ToObject<string>();
             User.Nickname = payload["extra"]["author"]["nickname"].ToObject<string>();

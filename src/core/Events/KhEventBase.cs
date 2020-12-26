@@ -11,6 +11,14 @@ namespace Kaiheila.Events
     [JsonObject(MemberSerialization.OptIn)]
     public class KhEventBase
     {
+        #region Common Fields
+
+        [Required]
+        [JsonProperty("raw")]
+        public string Raw;
+
+        #endregion
+
         #region Message Fields
 
         [Required]
