@@ -20,18 +20,27 @@ namespace Kaiheila.Client
     /// <example>
     /// 下面的示例演示了如何创建一个 <see cref="WebHookClient"/> 实例并连接。
     /// <code>
-    /// Bot bot =
-    ///     WebHookClient.CreateWebHookClient() // 使用「WebHookClient」来创建
-    ///         .Configure(options =>
+    /// namespace BotExample
+    /// {
+    ///     public static class Program
+    ///     {
+    ///         public static void Main(string[] args)
     ///         {
-    ///         options
-    ///             .Listen(8000) // 要监听的端口
-    ///             .UseEncryptKey("VYDVSU") // 「开发者中心」中提供的 Encrypt Key
-    ///             .UseVerifyToken("JEe-o85KiCd78fi") // 「开发者中心」中提供的 Verify Token
-    ///             .UseBotAuthorization("1E/3p7EClDQ=/Fro4cT47ipnqcERGFDvfQw=="); // 「开发者中心」中提供的 Token
-    ///         }).Build(); // 创建「WebHookClient」
+    ///             Bot bot =
+    ///                 WebHookClient.CreateWebHookClient() // 使用「WebHookClient」来创建
+    ///                     .Configure(options =>
+    ///                     {
+    ///                         options
+    ///                             .Listen(8000) // 要监听的端口
+    ///                             .UseEncryptKey("VYDVSU") // 「开发者中心」中提供的 Encrypt Key
+    ///                             .UseVerifyToken("JEe-o85KiCd78fi") // 「开发者中心」中提供的 Verify Token
+    ///                             .UseBotAuthorization("1E/3p7EClDQ=/Fro4cT47ipnqcERGFDvfQw=="); // 「开发者中心」中提供的 Token
+    ///                     }).Build(); // 创建「WebHookClient」
     /// 
-    /// bot.Start(); // 启动机器人
+    ///             bot.Start(); // 启动机器人
+    ///         }
+    ///     }
+    /// }
     /// </code>
     /// </example>
     /// <seealso cref="RestClient"/>
