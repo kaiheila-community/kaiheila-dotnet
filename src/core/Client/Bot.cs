@@ -47,31 +47,6 @@ namespace Kaiheila.Client
     /// <seealso cref="WebHookClient"/>
     public abstract class Bot : IDisposable
     {
-        #region Event
-
-        /// <summary>
-        /// 机器人事件的 Observable。
-        /// </summary>
-        public IObservable<KhEventBase> Event { get; protected set; }
-
-        protected IObserver<KhEventBase> EventObserver;
-
-        #endregion
-
-        #region Constructor
-
-        protected Bot()
-        {
-            Event = Observable.Create<KhEventBase>(observer =>
-                {
-                    EventObserver = observer;
-                    return Disposable.Empty;
-                })
-                .SubscribeOn(Scheduler.Default);
-        }
-
-        #endregion
-
         #region Lifecycle
 
         /// <summary>

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using Kaiheila.Client.Rest;
+using Kaiheila.Client.Event;
 using Kaiheila.Events;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json.Linq;
 
 namespace Kaiheila.Client.WebHook
 {
-    public class WebHookClient : RestClient
+    public class WebHookClient : EventClient
     {
         #region Constructor
 
@@ -18,19 +18,23 @@ namespace Kaiheila.Client.WebHook
         {
             Options = options;
 
-            Event = Observable.Create<JToken>(observer =>
-                {
-                    EventObserver = observer;
-                    return Disposable.Empty;
-                }).SubscribeOn(Scheduler.Default)
+            Event = _eventObserver
+                .SubscribeOn(TaskPoolScheduler.Default)
                 .Select(ParseEvent)
-                .Where(x => x is not null)
-                .SubscribeOn(Scheduler.Default);
+                .Where(x => x is not null);
 
             _webHost = CreateWebHostBuilder().Build();
         }
 
         public static WebHookClientBuilder CreateWebHookClient() => new WebHookClientBuilder();
+
+        #endregion
+
+        #region Event
+
+        private readonly Subject<JToken> _eventObserver = new();
+
+        public override IObservable<KhEventBase> Event { get; }
 
         #endregion
 
@@ -49,9 +53,7 @@ namespace Kaiheila.Client.WebHook
         #endregion
 
         #region Event
-
-        private new IObserver<JToken> EventObserver;
-
+        
         private KhEventBase ParseEvent(JToken payload)
         {
             try
@@ -62,7 +64,7 @@ namespace Kaiheila.Client.WebHook
             }
             catch (EventParseException e)
             {
-                EventObserver.OnError(e);
+                _eventObserver.OnError(e);
                 return null;
             }
         }
@@ -91,7 +93,7 @@ namespace Kaiheila.Client.WebHook
                         .UseWebHookClientDeserializer()
                         .UseWebHookClientDecryptor(Options)
                         .UseWebHookClientChallengeHandler(Options)
-                        .UseWebHookClientEmitter(() => EventObserver)
+                        .UseWebHookClientEmitter(() => _eventObserver)
                         .UseWebHookClientShorter();
                 });
 
