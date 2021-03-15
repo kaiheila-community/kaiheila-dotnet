@@ -43,25 +43,25 @@ namespace Kaiheila.Client.WebHook
     {
         #region Options Builder
 
-        public static WebHookClientOptions UseVerifyToken(
-            this WebHookClientOptions options,
-            string verifyToken)
+        public static T UseVerifyToken<T>(
+            this T options,
+            string verifyToken) where T : WebHookClientOptions
         {
             options.VerifyToken = verifyToken;
             return options;
         }
 
-        public static WebHookClientOptions UseEncryptKey(
-            this WebHookClientOptions options,
-            string encryptKey)
+        public static T UseEncryptKey<T>(
+            this T options,
+            string encryptKey) where T : WebHookClientOptions
         {
             options.EncryptKey = encryptKey;
             return options;
         }
 
-        public static WebHookClientOptions Listen(
-            this WebHookClientOptions options,
-            int port)
+        public static T Listen<T>(
+            this T options,
+            int port) where T : WebHookClientOptions
         {
             options.Port = port;
             return options;

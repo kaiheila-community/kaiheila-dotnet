@@ -104,18 +104,18 @@ namespace Kaiheila.Client
 
         #region Options Builder
 
-        public static BotOptions UseBotAuthorization(
-            this BotOptions options,
-            string token)
+        public static T UseBotAuthorization<T>(
+            this T options,
+            string token) where T : BotOptions
         {
             options.AuthorizationType = AuthorizationType.Bot;
             options.AuthorizationHeader = $"Bot {token}";
             return options;
         }
 
-        public static BotOptions UseOauth2Authorization(
-            this BotOptions options,
-            string token)
+        public static T UseOauth2Authorization<T>(
+            this T options,
+            string token) where T : BotOptions
         {
             options.AuthorizationType = AuthorizationType.Oauth2;
             options.AuthorizationHeader = $"Bearer {token}";
