@@ -100,12 +100,12 @@ namespace Kaiheila.Client.Rest
         {
             JToken response =
                 await Post(
-                    @"/channel/message",
+                    @"/message/create",
                     JObject.FromObject(
                         new
                         {
-                            object_name = type,
-                            channel_id = channel,
+                            type,
+                            target_id = channel,
                             content,
                             quote
                         }));
