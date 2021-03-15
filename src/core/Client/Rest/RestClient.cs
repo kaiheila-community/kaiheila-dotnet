@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Kaiheila.Net;
@@ -52,6 +54,41 @@ namespace Kaiheila.Client.Rest
             return request;
         }
 
+        private async Task<JToken> Get(
+            string endpoint,
+            Dictionary<string, string> query = null)
+        {
+            try
+            {
+                if (query is not null)
+                    endpoint += '?' + await new FormUrlEncodedContent(query).ReadAsStringAsync();
+
+                HttpWebRequest request = CreateRequest(endpoint);
+                
+                JObject response =
+                    JObject.Parse(await new StreamReader((await request.GetResponseAsync()).GetResponseStream()!)
+                        .ReadToEndAsync());
+
+                // ReSharper disable PossibleNullReferenceException
+
+                if (response["code"].ToObject<int>() != 0)
+                    throw new RestClientException(response["code"].ToObject<int>(),
+                        response["message"].ToObject<string>());
+
+                // ReSharper restore PossibleNullReferenceException
+
+                return response["data"];
+            }
+            catch (RestClientException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new RestClientException(0, string.Empty, e);
+            }
+        }
+
         private async Task<JToken> Post(
             string endpoint,
             JToken payload)
@@ -81,6 +118,30 @@ namespace Kaiheila.Client.Rest
             catch (RestClientException)
             {
                 throw;
+            }
+            catch (Exception e)
+            {
+                throw new RestClientException(0, string.Empty, e);
+            }
+        }
+
+        #endregion
+
+        #region Gateway
+
+        protected async Task<string> GetGateway()
+        {
+            JToken response =
+                await Get(
+                    @"/gateway/index");
+
+            try
+            {
+                // ReSharper disable PossibleNullReferenceException
+
+                return response["url"].ToObject<string>();
+
+                // ReSharper restore PossibleNullReferenceException
             }
             catch (Exception e)
             {
